@@ -18,7 +18,8 @@ public class FighterJet extends Jet implements CombatReady {
 	@Override
 	public void fly() {
 		System.out.println(this.toString() + "\nFlying for combat mission!");
-		
+		System.out.println("Duration: " + (this.getRange() / this.getSpeed()) + " hours.");
+
 	}
 
 }

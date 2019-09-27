@@ -2,17 +2,16 @@ package jets;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 public class AirField {
 
 //	F I E L D S
 
-	private Collection<Jet> jets = new HashSet<>();
+	private List<Jet> jets = new ArrayList<>();
 
 	private static int jetNumber = 0;
 
@@ -44,7 +43,7 @@ public class AirField {
 		return menuSelection;
 	}
 
-	public void launchMenuSelection(int menuSelection, Collection<Jet> jets, Scanner keyboard) {
+	public void launchMenuSelection(int menuSelection, List<Jet> jets, Scanner keyboard) {
 		switch (menuSelection) {
 		case 1:
 			listFleet(jets);
@@ -53,10 +52,13 @@ public class AirField {
 			flyFleet(jets);
 			break;
 		case 3:
+			searchFastestJet(jets);
 			break;
 		case 4:
+			searchFurthestRangeJet(jets);
 			break;
 		case 5:
+			loadAllCargoJets(jets);
 			break;
 		case 6:
 			break;
@@ -64,6 +66,7 @@ public class AirField {
 			addJetToFleet(keyboard);
 			break;
 		case 8:
+			removeJetFromFleet(keyboard, jets);
 			break;
 		case 9:
 			System.out.println("Exiting the program");
@@ -125,30 +128,79 @@ public class AirField {
 		}
 	}
 
-	public Collection<Jet> getJetsCopy(Collection<Jet> jets) {
-		Collection<Jet> jetsCopy = new HashSet<>();
+	public void removeJetFromFleet(Scanner keyboard, List<Jet> jets) {
+		System.out.println("Select an index of jet to remove:");
+		listFleet(jets);
+		try {
+			int index = keyboard.nextInt();
+			jets.remove(index);
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input");
+		}
+	}
+
+	public List<Jet> getJetsCopy(List<Jet> jets) {
+		List<Jet> jetsCopy = new ArrayList<>();
 		jetsCopy.addAll(jets);
 		return jetsCopy;
 	}
 
-	public void listFleet(Collection<Jet> jets) {
-		Iterator<Jet> it = jets.iterator();
-		while (it.hasNext()) {
-			System.out.println(it.next());
+	public void listFleet(List<Jet> jets) {
+
+		for (int c = 0; c < jets.size(); c++) {
+			System.out.println("Index: " + c + jets.get(c));
 		}
 	}
 
-	public void flyFleet(Collection<Jet> jets) {
+	public void flyFleet(List<Jet> jets) {
 		for (Jet element : jets) {
 			element.fly();
 		}
 	}
 
-	public Collection<Jet> getJets() {
+	public void searchFastestJet(List<Jet> jets) {
+		String fastestJet = "";
+		double fastestSpeed = 0.0;
+		for (Jet element : getJets()) {
+			if (element != null) {
+				if (element.getSpeed() > fastestSpeed) {
+					fastestSpeed = element.getSpeed();
+					fastestJet = element.toString();
+				}
+			}
+		}
+		System.out.println("Fastest Jet: " + fastestJet);
+	}
+
+	public void searchFurthestRangeJet(List<Jet> jets) {
+		String furthestRangeJet = "";
+		int furthestRange = 0;
+		for (Jet element : getJets()) {
+			if (element != null) {
+				if (element.getRange() > furthestRange) {
+					furthestRange = element.getRange();
+					furthestRangeJet = element.toString();
+				}
+			}
+		}
+		System.out.println("Fastest Jet: " + furthestRangeJet);
+	}
+
+	public void loadAllCargoJets(List<Jet> jets) {
+		for (Jet element : jets) {
+			if (element instanceof CargoPlane) {
+				CargoPlane cp = (CargoPlane) element;
+				System.out.print(element.getModel() + " ");
+				cp.loadCargo();
+			}
+		}
+	}
+
+	public List<Jet> getJets() {
 		return jets;
 	}
 
-	public void setJets(Collection<Jet> jets) {
+	public void setJets(List<Jet> jets) {
 		this.jets = jets;
 	}
 
@@ -159,9 +211,9 @@ public class AirField {
 	public void setJetNumber(int jetNumber) {
 		AirField.jetNumber = jetNumber;
 	}
-	
+
 	public void readJets(String fileName) {
-		Collection<String> jetsData = new HashSet<String>();
+		List<String> jetsData = new ArrayList<String>();
 		FileReader fr = null;
 		try {
 			fr = new FileReader(fileName);
@@ -169,8 +221,8 @@ public class AirField {
 			BufferedReader br = new BufferedReader(fr);
 			while ((lineOfText = br.readLine()) != null) {
 				jetsData.add(lineOfText);
-				
-				String[] fields = lineOfText.split(",");
+
+				String[] fields = lineOfText.split(", ");
 
 				String classType = fields[0];
 				String model = fields[1];
@@ -178,7 +230,7 @@ public class AirField {
 				int range = Integer.parseInt(fields[3].trim());
 				long price = Long.parseLong(fields[4].trim());
 				Jet j;
-				switch(classType) {
+				switch (classType) {
 				case "Fighter":
 					j = new FighterJet(model, speed, range, price);
 					jets.add(j);

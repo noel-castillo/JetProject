@@ -18,6 +18,7 @@ public class CargoPlane extends Jet implements CargoCarrier {
 	@Override
 	public void fly() {
 		System.out.println(this.toString() + "\nFlying for cargo supply mission!");
+		System.out.println("Duration: " + (this.getRange() / this.getSpeed()) + " hours.");
 	}
 
 }
