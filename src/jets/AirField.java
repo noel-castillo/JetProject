@@ -1,13 +1,16 @@
 package jets;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class AirField {
 
 //	F I E L D S
 
-	private Jet[] jets;
+	private Collection<Jet> jets = new HashSet<>();
 
 	private static int jetNumber = 0;
 
@@ -38,40 +41,107 @@ public class AirField {
 		}
 		return menuSelection;
 	}
-	
-	public Jet addJetToFleet(Scanner keyboard) {
-		Jet output;
-		System.out.println("1. Cargo Plane");
-		System.out.println("2. Fighter Jet");
-		int jetType = keyboard.nextInt();
-		System.out.print("Enter model:");
-		String model = keyboard.nextLine();
-		keyboard.nextLine();
-		System.out.print("Enter speed:");
-		double speed = keyboard.nextDouble();
-		System.out.print("Enter range:");
-		int range = keyboard.nextInt();
-		System.out.print("Enter price:");
-		long price = keyboard.nextLong();
-		switch(jetType) {
+
+	public void launchMenuSelection(int menuSelection, Collection<Jet> jets, Scanner keyboard) {
+		switch (menuSelection) {
 		case 1:
-			output = new CargoPlane(model, speed, range, price);
+			listFleet(jets);
 			break;
 		case 2:
-			output = new FighterJet(model, speed, range, price);
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			addJetToFleet(keyboard);
+			break;
+		case 8:
+			break;
+		case 9:
+			System.out.println("Exiting the program");
 			break;
 		default:
-			output = null;
+			System.out.println("Invalid menu option");
 			break;
 		}
-		return output;
 	}
 
-	public Jet[] getJets() {
+	public void addJetToFleet(Scanner keyboard) {
+		String model = "";
+		double speed = 0.0;
+		int range = 0, jetType = 0;
+		long price = 0;
+		System.out.println("1. Cargo Plane");
+		System.out.println("2. Fighter Jet");
+		try {
+			jetType = keyboard.nextInt();
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input");
+		}
+		System.out.print("Enter model:");
+		try {
+			keyboard.nextLine();
+			model = keyboard.nextLine();
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input");
+		}
+		System.out.print("Enter speed:");
+		try {
+			speed = keyboard.nextDouble();
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input");
+		}
+		System.out.print("Enter range:");
+		try {
+			range = keyboard.nextInt();
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input");
+		}
+		System.out.print("Enter price:");
+		try {
+
+			price = keyboard.nextLong();
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid input");
+		}
+		switch (jetType) {
+		case 1:
+			jets.add(new CargoPlane(model, speed, range, price, getJetNumber()));
+			setJetNumber(getJetNumber() + 1);
+			break;
+		case 2:
+			jets.add(new FighterJet(model, speed, range, price, getJetNumber()));
+			setJetNumber(getJetNumber() + 1);
+			break;
+		default:
+			System.out.println(jetType + " is an invalid option");
+			break;
+		}
+	}
+
+	public Collection<Jet> getJetsCopy(Collection<Jet> jets) {
+		Collection<Jet> jetsCopy = new HashSet<>();
+		jetsCopy.addAll(jets);
+		return jetsCopy;
+	}
+
+	public void listFleet(Collection<Jet> jets) {
+		Iterator<Jet> it = jets.iterator(); 
+		while (it.hasNext()) {
+			System.out.println(it.next());
+		}
+	}
+
+	public Collection<Jet> getJets() {
 		return jets;
 	}
 
-	public void setJets(Jet[] jets) {
+	public void setJets(Collection<Jet> jets) {
 		this.jets = jets;
 	}
 

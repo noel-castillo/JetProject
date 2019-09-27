@@ -7,10 +7,16 @@ public class JetsApplication {
 	public static void main(String[] args) {
 
 		Scanner keyboard = new Scanner(System.in);
-		JetsApplication app = new JetsApplication();
 		AirField af = new AirField();
+		int menuSelection;
 
+		do {
+			menuSelection = af.displayMenu(keyboard);
+			af.launchMenuSelection(menuSelection, af.getJets(), keyboard);
+
+		} while (menuSelection != 9);
+
+		System.out.println("Thanks for playing!");
 		keyboard.close();
 	}
-
 }
