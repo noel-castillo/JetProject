@@ -48,6 +48,7 @@ public class AirField {
 			listFleet(jets);
 			break;
 		case 2:
+			flyFleet(jets);
 			break;
 		case 3:
 			break;
@@ -131,9 +132,15 @@ public class AirField {
 	}
 
 	public void listFleet(Collection<Jet> jets) {
-		Iterator<Jet> it = jets.iterator(); 
+		Iterator<Jet> it = jets.iterator();
 		while (it.hasNext()) {
 			System.out.println(it.next());
+		}
+	}
+
+	public void flyFleet(Collection<Jet> jets) {
+		for (Jet element : jets) {
+			element.fly();
 		}
 	}
 
