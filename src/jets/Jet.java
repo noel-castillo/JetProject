@@ -12,16 +12,13 @@ public abstract class Jet {
 
 	private long price;
 
-	private int jetID;
-
 //	C O N S T R U C T O R S
 
-	public Jet(String model, double speed, int range, long price, int jetID) {
+	public Jet(String model, double speed, int range, long price) {
 		this.model = model;
 		this.speed = speed;
 		this.range = range;
 		this.price = price;
-		this.jetID = jetID;
 	}
 
 //	M E T H O D S 
@@ -58,17 +55,7 @@ public abstract class Jet {
 		this.price = price;
 	}
 
-	public int getJetID() {
-		return jetID;
-	}
-
-	public void setJetID(int jetID) {
-		this.jetID = jetID;
-	}
-
-	public void fly() {
-		System.out.println(toString() + "\n is taking flight!");
-	}
+	public abstract void fly();
 
 	public double getSpeedInMach() {
 		return this.getSpeed() / 767.269;

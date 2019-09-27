@@ -1,5 +1,7 @@
 package jets;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -112,12 +114,10 @@ public class AirField {
 		}
 		switch (jetType) {
 		case 1:
-			jets.add(new CargoPlane(model, speed, range, price, getJetNumber()));
-			setJetNumber(getJetNumber() + 1);
+			jets.add(new CargoPlane(model, speed, range, price));
 			break;
 		case 2:
-			jets.add(new FighterJet(model, speed, range, price, getJetNumber()));
-			setJetNumber(getJetNumber() + 1);
+			jets.add(new FighterJet(model, speed, range, price));
 			break;
 		default:
 			System.out.println(jetType + " is an invalid option");
@@ -158,5 +158,43 @@ public class AirField {
 
 	public void setJetNumber(int jetNumber) {
 		AirField.jetNumber = jetNumber;
+	}
+	
+	public void readJets(String fileName) {
+		Collection<String> jetsData = new HashSet<String>();
+		FileReader fr = null;
+		try {
+			fr = new FileReader(fileName);
+			String lineOfText;
+			BufferedReader br = new BufferedReader(fr);
+			while ((lineOfText = br.readLine()) != null) {
+				jetsData.add(lineOfText);
+				
+				String[] fields = lineOfText.split(",");
+
+				String classType = fields[0];
+				String model = fields[1];
+				double speed = Double.parseDouble(fields[2].trim());
+				int range = Integer.parseInt(fields[3].trim());
+				long price = Long.parseLong(fields[4].trim());
+				Jet j;
+				switch(classType) {
+				case "Fighter":
+					j = new FighterJet(model, speed, range, price);
+					jets.add(j);
+					break;
+				case "Cargo":
+					j = new CargoPlane(model, speed, range, price);
+					jets.add(j);
+					break;
+				default:
+					System.out.println("Invalid class type in text file.");
+					break;
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
