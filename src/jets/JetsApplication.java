@@ -1,10 +1,16 @@
 package jets;
 
+import java.util.Scanner;
+
 public class JetsApplication {
 
 	public static void main(String[] args) {
 
-//		AirField af = new AirField();
+		Scanner keyboard = new Scanner(System.in);
+		JetsApplication app = new JetsApplication();
+		AirField af = new AirField();
+
+		keyboard.close();
 	}
 
 }
