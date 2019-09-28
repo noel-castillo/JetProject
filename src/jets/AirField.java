@@ -14,6 +14,7 @@ public class AirField {
 	private List<Jet> jets = new ArrayList<>();
 
 	private static int jetNumber = 0;
+	
 
 //	C O N S T R U C T O R S
 
@@ -61,6 +62,8 @@ public class AirField {
 			loadAllCargoJets(jets);
 			break;
 		case 6:
+			DogFight app = new DogFight();
+			app.constructDogFight(jets, keyboard);
 			break;
 		case 7:
 			addJetToFleet(keyboard);
@@ -188,7 +191,7 @@ public class AirField {
 
 	public void loadAllCargoJets(List<Jet> jets) {
 		for (Jet element : jets) {
-			if (element instanceof CargoPlane) {
+			if (element instanceof CargoCarrier) {
 				CargoPlane cp = (CargoPlane) element;
 				System.out.print(element.getModel() + " ");
 				cp.loadCargo();
@@ -249,4 +252,5 @@ public class AirField {
 			e.printStackTrace();
 		}
 	}
+
 }
