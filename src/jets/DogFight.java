@@ -10,11 +10,11 @@ public class DogFight {
 	
 	private int p2;
 	
-	private int hp;
-	
-	private int fl;
-	
-	private int bp;
+//	private int hp;
+//	
+//	private int fl;
+//	
+//	private int bp;
 	
 //	C O N S T R U C T O R 
 	
